@@ -38,7 +38,7 @@ def task_analyse():
 @app.route('/charts')
 @app.route('/charts/charts.html', methods=['GET', 'POST'])
 def charts():
-    return render_template('/charts/charts.html')
+    return render_template('charts/charts.html')
 
 
 if __name__ == '__main__':
