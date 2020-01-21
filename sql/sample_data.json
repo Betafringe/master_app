@@ -1,0 +1,28 @@
+{
+  "code": 200,
+  "message": "car analyse created",
+  "carName": "奔驰",
+  "options" : {
+    "service_hotwords": {
+      "message": "hotwords req",
+      "data": {
+        "外观": 58,
+        "刹车": 19,
+        "加速": 19,
+        "配置": 17,
+        "座椅": 16,
+      }
+    },
+    "service_radar": {
+      "message": "radar req",
+      "data" : {
+        "价格": 0.5,
+        "动力": 0.8,
+        "外观": 1.0,
+        "操控": 0.75,
+        "油耗": 1.0,
+      }
+    }
+  },
+  "time": "utc-time"
+}

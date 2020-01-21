@@ -643,8 +643,10 @@
 	<script src="../../static/assets/js/setting-demo.js"></script>
 	<script src="../../static/assets/js/plugin/echarts.min.js"></script>
 	<script>
+	// <!--using ajax to get input toolbox text which is a car name-->
+		let carName;
 		function readText() {
-			let carName = document.getElementById('textCarType').value;
+			carName = document.getElementById('textCarType').value;
 			let ret_data ={
 				"carType": carName,
 			};
@@ -654,25 +656,46 @@
 				data: ret_data,
 				dataType: 'json',
 				success: function (data) {
+					console.log(data);
+					let r = data.options.service_radar.data;
+					var myRadarChart = new Chart(radarChart, {
+						type: 'radar',
+						data: {
+							// labels: ['Running', 'Swimming', 'Eating', 'Cycling', 'Jumping'],
+							labels: ['价格', '动力', '外观', '操控', '油耗'],
+							datasets: [{
+								data: [r.价格, r.动力, r.外观, r.操控, r.油耗],
+								borderColor: '#1d7af3',
+								backgroundColor : 'rgba(29, 122, 243, 0.25)',
+								pointBackgroundColor: "#1d7af3",
+								pointHoverRadius: 4,
+								pointRadius: 3,
+								label: data.carName,
+							}, {
+								data: [0.4, 0.74, 0.6, 0.5, 0.7],
+								borderColor: '#716aca',
+								backgroundColor: 'rgba(113, 106, 202, 0.25)',
+								pointBackgroundColor: "#716aca",
+								pointHoverRadius: 4,
+								pointRadius: 3,
+								label: "AVG.平均值"
+							},
+							]
+						},
+						options : {
+							responsive: true,
+							maintainAspectRatio: false,
+							legend : {
+								position: 'bottom'
+							}
+						}
+					});
 				},
 				error: function(xhr, type){
 				}
-			});
+			})
 		}
-	<!--using ajax to get input toolbox text which is a car name-->
-		// let ret_data ={
-		// 	"carType": carName,
-		// };
-		// $.ajax({
-		// 	type: 'GET',
-		// 	url: '/task/v1/analyse/',
-		// 	data: ret_data,
-		// 	dataType: 'json',
-		// 	success: function (data) {
-		// 	},
-		// 	error: function(xhr, type){
-		// 	}
-		// });
+
         lineChart = echarts.init(document.getElementById('lineChart')),
 		barChart = document.getElementById('barChart').getContext('2d'),
 		pieChart = document.getElementById('pieChart').getContext('2d'),
@@ -826,7 +849,7 @@
 				}],
 			},
 			options: {
-				responsive: true, 
+				responsive: true,
 				maintainAspectRatio: false,
 				scales: {
 					yAxes: [{
@@ -904,38 +927,6 @@
 						top: 20,
 						bottom: 20
 					}
-				}
-			}
-		});
-
-		var myRadarChart = new Chart(radarChart, {
-			type: 'radar',
-			data: {
-				labels: ['Running', 'Swimming', 'Eating', 'Cycling', 'Jumping'],
-				datasets: [{
-					data: [20, 10, 30, 2, 30],
-					borderColor: '#1d7af3',
-					backgroundColor : 'rgba(29, 122, 243, 0.25)',
-					pointBackgroundColor: "#1d7af3",
-					pointHoverRadius: 4,
-					pointRadius: 3,
-					label: 'Team 1'
-				}, {
-					data: [10, 20, 15, 30, 22],
-					borderColor: '#716aca',
-					backgroundColor: 'rgba(113, 106, 202, 0.25)',
-					pointBackgroundColor: "#716aca",
-					pointHoverRadius: 4,
-					pointRadius: 3,
-					label: 'Team 2'
-				},
-				]
-			},
-			options : {
-				responsive: true, 
-				maintainAspectRatio: false,
-				legend : {
-					position: 'bottom'
 				}
 			}
 		});
