@@ -89,15 +89,18 @@ def creat_sql(db, file):
 
 # Unnamed: 0,uid,all_comment,score,aspects,aspect_words,segs,sentiment
 if __name__ == '__main__':
+    # db_info = {
+    #     'host': 'rm-2ze12jwa5a242g11lmo.mysql.rds.aliyuncs.com',
+    #     'user': 'ycf',
+    #     'passwd': 'Cjb77xxh!',
+    #     'db': 'ycf',
+    # }
     db_info = {
-        'host': 'rm-2ze12jwa5a242g11lmo.mysql.rds.aliyuncs.com',
-        'user': 'ycf',
-        'passwd': 'Cjb77xxh!',
-        'db': 'ycf',
+        'host': 'localhost',
+        'user': 'root',
+        'passwd': 'Qdalone2412#',
+        'db': 'master_car',
     }
-    # with DB(host=db_info['host'], user=db_info['user'], passwd=db_info['passwd'], db=db_info['db']) as db:
-    #     insert_category(db)
-
     file_list = os.listdir(path)
     for idx, file in enumerate(file_list):
         print(">" * 15, file, idx+1, len(file_list))

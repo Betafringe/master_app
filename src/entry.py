@@ -10,7 +10,7 @@ import sys, os, json
 from flask import Flask, render_template, request, Response
 from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
-from services import ret_radar
+from services import ret_r
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
@@ -31,7 +31,7 @@ def task_analyse():
     ret_data = {}
     if request.method == 'GET':
         car_name = request.args.get("carType")
-        ret_data = ret_radar(car_name)
+        ret_data = ret_r(car_name)
     else:
         pass
     return jsonify(ret_data)
@@ -46,6 +46,11 @@ def Response_headers(content):
     resp = Response(content)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
+
+
+@app.route('/tables/datatables.html')
+def datatables():
+    return render_template('tables/datatables.html')
 
 
 @app.errorhandler(403)

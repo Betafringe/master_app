@@ -18,7 +18,7 @@ db_info = {
 }
 
 
-class DB():
+class DB(object):
     def __init__(self, host='localhost', port=3306, db='', user='root', passwd='root', charset='utf8'):
         # 建立连接
         self.conn = pymysql.connect(host=host, port=port, db=db, user=user, passwd=passwd, charset=charset)
@@ -73,7 +73,7 @@ def service_radar(carname):
 # join sentiment on sentiment.senti_id = sentiment_aspect_word.senti_id
 # join comment on sentiment.comm_id = comment.comm_id
 # where comment.car_name like "%夏利%";
-def service_hotwords(carname, topn=10):
+def service_hotwords(carname, topn=20):
     """
     :param carname=keywords for query:
     :param topn, topn topic should return :
@@ -96,7 +96,48 @@ def service_hotwords(carname, topn=10):
         ret[word] = freq
     return ret
 
+
+def service_hot_pos_topics(carname, topn=3):
+    '''
+
+    :param carname:
+    :param topn topn positive topics:
+    :return {'操控': 699, '舒适性': 575, '内饰': 563}
+    '''
+    category_dict = {'价格': 0, '内饰': 1, '动力': 2, '外观': 3, '安全性': 4, '操控': 5, '油耗': 6, '空间': 7, '舒适性': 8, '配置': 9}
+    ret = {}
+    with DB(host=db_info['host'], user=db_info['user'], passwd=db_info['passwd'], db=db_info['db']) as db:
+        for k, v in zip(category_dict.keys(), category_dict.values()):
+            sql = 'select count(Comment.comm_id) from comment ' \
+                  'join sentiment on sentiment.comm_id = comment.comm_id ' \
+                  'where car_name like \"%%%s%%\" and cate_id=%d and senti_value=2' % (carname, v)
+            db.execute(sql)
+            n = db.fetchone()['count(Comment.comm_id)']
+            ret[k] = n
+    return dict(sorted(ret.items(), key=lambda item: item[1], reverse=True)[:topn])
+
+
+def service_hot_neg_topics(carname, topn=3):
+    '''
+
+    :param carname:
+    :param topn topn neg topics:
+    :return {'舒适性': 716, '内饰': 253, '动力': 198}
+    '''
+    category_dict = {'价格': 0, '内饰': 1, '动力': 2, '外观': 3, '安全性': 4, '操控': 5, '油耗': 6, '空间': 7, '舒适性': 8, '配置': 9}
+    ret = {}
+    with DB(host=db_info['host'], user=db_info['user'], passwd=db_info['passwd'], db=db_info['db']) as db:
+        for k, v in zip(category_dict.keys(), category_dict.values()):
+            sql = 'select count(Comment.comm_id) from comment ' \
+                  'join sentiment on sentiment.comm_id = comment.comm_id ' \
+                  'where car_name like \"%%%s%%\" and cate_id=%d and senti_value=0' % (carname, v)
+            db.execute(sql)
+            n = db.fetchone()['count(Comment.comm_id)']
+            ret[k] = n
+    return dict(sorted(ret.items(), key=lambda item: item[1], reverse=True)[:topn])
+
+
 def tsql():
     pass
 
-service_radar("奔驰")
+

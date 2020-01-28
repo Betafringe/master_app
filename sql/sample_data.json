@@ -2,9 +2,30 @@
   "code": 200,
   "message": "car analyse created",
   "carName": "奔驰",
+  "time": "utc-time",
   "options" : {
     "service_hotwords": {
       "message": "hotwords req",
+      "data": {
+        "外观": 58,
+        "刹车": 19,
+        "加速": 19,
+        "配置": 17,
+        "座椅": 16,
+      }
+    },
+    "service_hot_neg_topics": {
+      "message": "service_hot_neg_topics req",
+      "data": {
+        "外观": 58,
+        "刹车": 19,
+        "加速": 19,
+        "配置": 17,
+        "座椅": 16,
+      }
+    },
+    "service_hot_pos_topics": {
+      "message": "service_hot_pos_topics req",
       "data": {
         "外观": 58,
         "刹车": 19,
@@ -20,9 +41,8 @@
         "动力": 0.8,
         "外观": 1.0,
         "操控": 0.75,
-        "油耗": 1.0,
+        "油耗": 1.0
       }
     }
-  },
-  "time": "utc-time"
+  }
 }
